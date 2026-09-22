@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aidan Miller</title>
+<style>
+  :root {
+    --ground: #DDD9F2;
+    --ink: #241B45;
+    --ink-soft: #564b7d;
+    --mark: #99154E;
+    --rule: #bdb6e0;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ground: #1B1434;
+      --ink: #E4E0F7;
+      --ink-soft: #a29ac9;
+      --mark: #F5A8C8;
+      --rule: #3b3163;
+    }
+  }
+
+  * { box-sizing: border-box; }
+
+  html { -webkit-text-size-adjust: 100%; }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 4rem 1rem;
+    background: var(--ground);
+    color: var(--ink);
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+
+  main {
+    width: 100%;
+    max-width: 46rem;
+    margin: 0 auto;
+  }
+
+  h1 {
+    margin: 0 0 1.75rem;
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+  }
+
+  .statement {
+    margin: 0;
+    max-width: 24ch;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(2.1rem, 7.5vw, 4.25rem);
+    font-weight: 400;
+    line-height: 1.04;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+
+  .statement .now {
+    color: var(--ink-soft);
+  }
+
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    margin: 3rem 0 0;
+    padding: 1.5rem 0 0;
+    border-top: 1px solid var(--rule);
+    list-style: none;
+    font-size: 1rem;
+  }
+
+  a {
+    color: var(--mark);
+    text-decoration-color: var(--mark);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.3em;
+    transition: text-decoration-thickness 120ms ease;
+  }
+
+  a:hover { text-decoration-thickness: 3px; }
+
+  a:focus-visible {
+    outline: 2px solid var(--mark);
+    outline-offset: 4px;
+    border-radius: 1px;
+  }
+
+  footer {
+    margin-top: 2.5rem;
+    color: var(--ink-soft);
+    font-size: 0.8125rem;
+  }
+
+  main > * {
+    animation: rise 700ms cubic-bezier(0.2, 0.7, 0.2, 1) backwards;
+  }
+  h1 { animation-delay: 60ms; }
+  .statement { animation-delay: 160ms; }
+  .links { animation-delay: 380ms; }
+  footer { animation-delay: 460ms; }
+
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(0.6rem); }
+    to   { opacity: 1; transform: none; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    main > * { animation: none; }
+    a { transition: none; }
+  }
+</style>
+</head>
+<body>
+  <main>
+    <h1>Aidan Miller</h1>
+
+    <p class="statement">Computer science student at Monmouth
+      University. I made a music web app, and
+      <span class="now">now I'm making one that tracks Brawl Stars
+      stats.</span></p>
+
+    <ul class="links">
+      <li><a href="https://github.com/aidanm20">GitHub</a></li>
+      <li><a href="https://www.linkedin.com/in/aidan-miller-2b29a5335/">LinkedIn</a></li>
+    </ul>
+
+    <footer>Updated September 2026</footer>
+  </main>
+</body>
+</html>
