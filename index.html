@@ -10,7 +10,11 @@
     --ink: #241B45;
     --ink-soft: #564b7d;
     --mark: #8C1F3F;
-    --rule: #bdb6e0;
+    --on-mark: #F6F3FF;
+    --bloom-1: #8C1F3F;
+    --bloom-2: #6C4CE0;
+    --bloom-opacity: 0.30;
+    --bloom-blend: multiply;
   }
 
   @media (prefers-color-scheme: dark) {
@@ -19,26 +23,51 @@
       --ink: #E4E0F7;
       --ink-soft: #a29ac9;
       --mark: #F0A8C0;
-      --rule: #3b3163;
+      --on-mark: #1B1434;
+      --bloom-1: #B5265C;
+      --bloom-2: #5B3FD6;
+      --bloom-opacity: 0.50;
+      --bloom-blend: screen;
     }
   }
 
   * { box-sizing: border-box; }
 
-  html { -webkit-text-size-adjust: 100%; }
+  html {
+    -webkit-text-size-adjust: 100%;
+    overflow-x: hidden;
+  }
 
   body {
+    position: relative;
     margin: 0;
     min-height: 100vh;
     display: flex;
     align-items: center;
     padding: 4rem 1rem;
+    overflow-x: hidden;
     background: var(--ground);
     color: var(--ink);
     font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
   }
 
+  /* One large still bloom anchored low-left. The contact page drifts;
+     this page holds steady. Same palette, different composition. */
+  .bloom {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    mix-blend-mode: var(--bloom-blend);
+    opacity: var(--bloom-opacity);
+    background:
+      radial-gradient(70vmax 70vmax at 8% 88%, var(--bloom-1), transparent 62%),
+      radial-gradient(58vmax 58vmax at 88% 8%, var(--bloom-2), transparent 60%);
+  }
+
   main {
+    position: relative;
+    z-index: 1;
     width: 100%;
     max-width: 46rem;
     margin: 0 auto;
@@ -66,37 +95,51 @@
     color: var(--mark);
   }
 
-  .links {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1.5rem;
-    margin: 3rem 0 0;
-    padding: 1.5rem 0 0;
-    border-top: 1px solid var(--rule);
-    list-style: none;
-    font-size: 1rem;
+  .cta {
+    position: relative;
+    display: inline-block;
+    margin-top: 3rem;
+    padding: 1.0625rem 2.5rem;
+    overflow: hidden;
+    background: var(--mark);
+    color: var(--on-mark);
+    font-size: 1.125rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    text-decoration: none;
+    transition: transform 220ms cubic-bezier(0.2, 0.7, 0.2, 1);
   }
 
-  a {
-    color: var(--ink);
-    text-decoration-color: var(--ink-soft);
-    text-decoration-thickness: 1px;
-    text-underline-offset: 0.3em;
-    transition: text-decoration-thickness 120ms ease;
+  /* A light sweeps across the button when you point at it. */
+  .cta::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: -60%;
+    width: 45%;
+    background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.45), transparent);
+    transform: skewX(-18deg);
   }
 
-  a:hover { text-decoration-thickness: 3px; }
+  .cta:hover,
+  .cta:focus-visible {
+    transform: translateY(-2px);
+  }
 
-  a:focus-visible {
+  .cta:hover::after,
+  .cta:focus-visible::after {
+    animation: sweep 620ms ease-out;
+  }
+
+  .cta:focus-visible {
     outline: 2px solid var(--ink);
     outline-offset: 4px;
-    border-radius: 1px;
   }
 
-  footer {
-    margin-top: 2.5rem;
-    color: var(--ink-soft);
-    font-size: 0.8125rem;
+  @keyframes sweep {
+    from { left: -60%; }
+    to   { left: 130%; }
   }
 
   main > * {
@@ -104,8 +147,7 @@
   }
   h1 { animation-delay: 60ms; }
   .statement { animation-delay: 160ms; }
-  .links { animation-delay: 380ms; }
-  footer { animation-delay: 460ms; }
+  .cta { animation-delay: 400ms; }
 
   @keyframes rise {
     from { opacity: 0; transform: translateY(0.6rem); }
@@ -114,11 +156,15 @@
 
   @media (prefers-reduced-motion: reduce) {
     main > * { animation: none; }
-    a { transition: none; }
+    .cta { transition: none; }
+    .cta:hover::after,
+    .cta:focus-visible::after { animation: none; }
   }
 </style>
 </head>
 <body>
+  <div class="bloom" aria-hidden="true"></div>
+
   <main>
     <h1>Aidan Miller</h1>
 
@@ -127,13 +173,7 @@
       <span class="now">now I'm making one that tracks Brawl Stars
       stats.</span></p>
 
-    <ul class="links">
-      <li><a href="contact.html">Reach me</a></li>
-      <li><a href="https://github.com/aidanm20">GitHub</a></li>
-      <li><a href="https://www.linkedin.com/in/aidan-miller-2b29a5335/">LinkedIn</a></li>
-    </ul>
-
-    <footer>Updated September 2026</footer>
+    <a class="cta" href="contact.html">Reach me</a>
   </main>
 </body>
 </html>
